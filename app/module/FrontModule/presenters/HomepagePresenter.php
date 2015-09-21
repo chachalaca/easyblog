@@ -2,30 +2,16 @@
 
 namespace App\FrontModule\Presenters;
 
+use App\Model\Repository\ArticleRepository;
 use Nette;
-use App\Model\Cms\Article;
 
 
-class HomepagePresenter extends Nette\Application\UI\Presenter
+class HomepagePresenter extends BasePresenter
 {
 
-
-    /** @var  Article */
-    private $article;
-
-    /**
-     * HomepagePresenter constructor.
-     * @param Article $article
-     */
-    public function __construct(Article $article) {
-        parent::__construct();
-        $this->article = $article;
+    public function actionDefault() {
+        $this->redirect('Article:');
     }
 
-
-    public function renderDefault() {
-
-
-    }
 
 }

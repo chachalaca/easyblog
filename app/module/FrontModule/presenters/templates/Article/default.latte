@@ -1,0 +1,25 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+<div id="content">
+
+
+    {foreach $articles as $article}
+        <div>
+            <h2><a n:href="Article:detail $article->id">{$article->title}</a></h2>
+                {if $user->isInRole('admin')}
+                    <a n:href="Article:default $article->id">edit</a>
+                {/if}
+
+
+            <p>
+                {$article->content}
+            </p>
+        </div>
+    {/foreach}
+
+</div>
+
+{if $user->isInRole('admin')}
+    {control articleForm}
+{/if}

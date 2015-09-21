@@ -252,7 +252,7 @@ class Selection extends Nette\Object implements \Iterator, IRowContainer, \Array
 
 		$row = $this->fetch();
 		if ($row) {
-			return $column ? $row[$column] : array_values($row->toArray())[0];
+			return $column ? $row[$column] : current($row->toArray());
 		}
 
 		return FALSE;
@@ -522,8 +522,8 @@ class Selection extends Nette\Object implements \Iterator, IRowContainer, \Array
 		foreach ($result->getPdoStatement() as $key => $row) {
 			$row = $this->createRow($result->normalizeRow($row));
 			$primary = $row->getSignature(FALSE);
-			$usedPrimary = $usedPrimary && $primary;
-			$this->rows[$primary ?: $key] = $row;
+			$usedPrimary = $usedPrimary && (string) $primary !== '';
+			$this->rows[$usedPrimary ? $primary : $key] = $row;
 		}
 		$this->data = $this->rows;
 
@@ -559,7 +559,7 @@ class Selection extends Nette\Object implements \Iterator, IRowContainer, \Array
 	}
 
 
-	protected function emptyResultSet($saveCache = TRUE)
+	protected function emptyResultSet($saveCache = TRUE, $deleteRererencedCache = TRUE)
 	{
 		if ($this->rows !== NULL && $saveCache) {
 			$this->saveCacheState();
@@ -574,7 +574,9 @@ class Selection extends Nette\Object implements \Iterator, IRowContainer, \Array
 		$this->specificCacheKey = NULL;
 		$this->generalCacheKey = NULL;
 		$this->refCache['referencingPrototype'] = array();
-		$this->refCache['referenced'] = array();
+		if ($deleteRererencedCache) {
+			$this->refCache['referenced'] = array();
+		}
 	}
 
 

@@ -274,6 +274,11 @@ class ActiveRow implements \IteratorAggregate, IRow
 	}
 
 
+	/**
+	 * @param  string
+	 * @return ActiveRow|mixed
+	 * @throws Nette\MemberAccessException
+	 */
 	public function &__get($key)
 	{
 		$this->accessColumn($key);
@@ -288,7 +293,8 @@ class ActiveRow implements \IteratorAggregate, IRow
 		}
 
 		$this->removeAccessColumn($key);
-		throw new Nette\MemberAccessException("Cannot read an undeclared column '$key'.");
+		$hint = Nette\Utils\ObjectMixin::getSuggestion(array_keys($this->data), $key);
+		throw new Nette\MemberAccessException("Cannot read an undeclared column '$key'" . ($hint ? ", did you mean '$hint'?" : '.'));
 	}
 
 

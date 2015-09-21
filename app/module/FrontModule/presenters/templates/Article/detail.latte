@@ -1,0 +1,30 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+
+<div id="content">
+    <h2>{$article->title}</h2>
+
+    <p>
+        {$article->content}
+    </p>
+    <span>{$article->created_at|date:'%d.%m.%Y'}</span>
+
+    <p>
+        Kategorie:
+        {foreach $articleCategories as $category}
+            {$category->title}
+            {if !$iterator->last}, {/if}
+        {/foreach}
+    </p>
+
+    <h3>Komentáře:</h3>
+    {foreach $articleComments as $articleComment}
+
+        <div>
+            Autor: {$articleComment->getUser()->username} </br>
+            {$articleComment->message}
+        </div>
+    {/foreach}
+
+</div>

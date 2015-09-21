@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
 
-	<title>{ifset title}{include title|striptags} | {/ifset}Nette Web</title>
+    <title>{ifset title}{include title|striptags} | {/ifset}Nette Web</title>
 
-	<link rel="shortcut icon" href="{$basePath}/favicon.ico">
+    <link rel="shortcut icon" href="{$basePath}/favicon.ico">
 </head>
 
 <body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
-	{include content}
+<div>
+    {if $user->isLoggedIn()}
+        Přihlášen: {$user->getIdentity()->username}
+        <a n:href="Sign:out">Odhlásit</a>
+    {else}
+        <a n:href="Sign:in">Přihlásit</a>
+    {/if}
+</div>
 
-	{block scripts}
-	<script src="//nette.github.io/resources/js/netteForms.min.js"></script>
-	{/block}
+{include content}
+
+{block scripts}
+    <script src="//nette.github.io/resources/js/netteForms.min.js"></script>
+{/block}
 </body>
 </html>

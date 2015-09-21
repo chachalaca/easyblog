@@ -10,5 +10,17 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter {
 
 
+    /**
+     * @param $record
+     * @param string $message
+     * @return bool if ok
+     * @throws Nette\Application\BadRequestException
+     */
+    public function checkRecord($record, $message = 'Record not found') {
+        if($record == NULL) {
+            $this->error($message);
+        }
+        return true;
+    }
 
 }
