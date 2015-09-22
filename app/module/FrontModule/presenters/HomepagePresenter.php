@@ -9,9 +9,9 @@ use Nette;
 class HomepagePresenter extends BasePresenter
 {
 
-    public function actionDefault() {
+    public function actionDefault()
+	{
         $this->redirect('Article:');
     }
-
 
 }

@@ -21,9 +21,8 @@ class RouterFactory
 			'module' => 'Front',
 			'presenter' => 'Homepage',
 			'action' => 'default',
-			'articleId' => NULL
+			'articleId' => NULL,
 		));
-
 
 		return $router;
 	}

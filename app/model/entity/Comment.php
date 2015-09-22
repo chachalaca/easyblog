@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: samik
@@ -8,10 +9,10 @@
 
 namespace App\Model\Entity;
 
-
 use App\Model\Entities\BaseEntity;
 use YetORM\Entity;
 use YetORM\EntityCollection;
+
 
 /**
  * @property-read int $id
@@ -22,7 +23,8 @@ class Comment extends BaseEntity
 {
 
     /** @return \App\Model\Entity\User */
-    public function getUser() {
+    public function getUser()
+	{
         return new User($this->record->user);
     }
 

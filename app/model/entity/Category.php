@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: samik
@@ -8,9 +9,9 @@
 
 namespace App\Model\Entity;
 
-
 use App\Model\Entities\BaseEntity;
 use YetORM\Entity;
+
 
 /**
  * @property-read int $id

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: samik
@@ -8,9 +9,9 @@
 
 namespace App\Model\Repository;
 
-
 use YetORM\Repository;
 use \App\Model\Entity\Article;
+
 
 /**
  * @table article
@@ -18,24 +19,30 @@ use \App\Model\Entity\Article;
  */
 class ArticleRepository extends Repository
 {
+
     /** @return EntityCollection of Article */
-    public function getArticles() {
+    public function getArticles()
+	{
         return $this->findAll();
     }
+
 
     /**
      * @param int $id
      * @return \App\Model\Entity\Article
      */
-    public function getArticle($id) {
+    public function getArticle($id)
+	{
         return $this->getByID($id);
     }
+
 
     /**
      * @param array() $values
      * @return \Nette\Database\Table\Selection of new record
      */
-    public function addArticle($values) {
+    public function addArticle($values)
+	{
         return $this->database->table('article')->insert($values);
     }
 
@@ -45,7 +52,8 @@ class ArticleRepository extends Repository
      * @param array() $values
      * @return \Nette\Database\Table\Selection
      */
-    public function updateArticle($articleId, $values) {
+    public function updateArticle($articleId, $values)
+	{
         $article = $this->database->table('article')->wherePrimary($articleId);
         $article->update($values);
 

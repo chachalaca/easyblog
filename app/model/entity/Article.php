@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: samik
@@ -22,17 +23,18 @@ use YetORM\EntityCollection;
  */
 class Article extends BaseEntity
 {
-    public function getAllCategories() {
+
+    public function getAllCategories()
+	{
         $selection = $this->record->related('article_in_category');
         return new EntityCollection($selection, '\App\Model\Entity\Category', 'category');
     }
 
-    public function getAllComments() {
+
+    public function getAllComments()
+	{
         $selection = $this->record->related('comment', 'article_id');
         return new EntityCollection($selection, '\App\Model\Entity\Comment');
     }
-
-
-
 
 }
