@@ -19,7 +19,7 @@ class RouterFactory
 
 		$router[] = new Route('<presenter>/<action>[/<articleId>]', array(
 			'module' => 'Front',
-			'presenter' => 'Homepage',
+			'presenter' => 'Article',
 			'action' => 'default',
 			'articleId' => NULL,
 		));

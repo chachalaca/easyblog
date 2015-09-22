@@ -13,6 +13,7 @@ class BaseEntity extends YetORM\Entity
 	{
         $ref = static::getReflection();
         $values = array();
+
         foreach ($ref->getEntityProperties() as $name => $property) {
             if ($property instanceof YetORM\Reflection\MethodProperty) {
                 $value = $this->{'get' . $name}();

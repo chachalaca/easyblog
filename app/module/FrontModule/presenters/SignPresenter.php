@@ -3,7 +3,7 @@
 namespace App\FrontModule\Presenters;
 
 use Nette\Application\UI\Form;
-use App\Model\UserManager;
+use App\Model\Repository\UserRepository;
 use \Nette\Security\AuthenticationException;
 
 
@@ -13,13 +13,13 @@ use \Nette\Security\AuthenticationException;
 class SignPresenter extends BasePresenter
 {
 
-    /** @var UserManager */
-    private $userManager;
+    /** @var UserRepository */
+	private $users;
 
 
-    public function __construct(UserManager $userManager)
+    public function __construct(UserRepository $users)
 	{
-        $this->userManager = $userManager;
+        $this->users = $users;
     }
 
 
@@ -43,14 +43,15 @@ class SignPresenter extends BasePresenter
 
             if ($values->remember) {
                 $this->user->setExpiration('7 day', FALSE);
+
             } else {
                 $this->user->setExpiration('30 minutes', TRUE);
             }
 
             $this->flashMessage('Úspěšné přihlášení', 'success');
-            $this->redirect('Homepage:');
+            $this->redirect('Article:default');
 
-        } catch (AuthenticationException $ex) {
+        } catch (AuthenticationException $e) {
             $this->flashMessage('Špatné jméno nebo heslo.', 'error');
         }
     }
@@ -58,15 +59,22 @@ class SignPresenter extends BasePresenter
 
     protected function createComponentRegisterForm()
 	{
-        $form = new Form();
+        $form = new Form;
+
         $form->addText('email', 'E-mail:')
-            ->setRequired();
+				->setRequired();
+
         $form->addPassword('password', 'Helso:')
-            ->setRequired();
+	            ->setRequired();
+
         $form->addPassword('password2', 'Heslo znovu:')
-            ->setRequired();
+				->setOmitted(TRUE)
+				->setRule(Form::EQUAL, NULL, $form['password'])
+	            ->setRequired();
+
         $form->addText('name', 'Celé jméno:')
-            ->setRequired();
+	            ->setRequired();
+
         $form->addCheckbox('terms');
         $form->addSubmit('btnRegister', 'Registrovat');
 
@@ -75,57 +83,29 @@ class SignPresenter extends BasePresenter
     }
 
 
-    public function registerFormSucceeded(Form $form)
+    public function registerFormSucceeded(Form $form, $values)
 	{
-        $values = $form->getValues();
+		try {
+			$user = $this->users->createEntity();
+			$user->setUsername($values->name);
+			$user->setPassword($values->password);
+			$this->users->persist($user);
+			$this->redirect('Sign:in');
 
-        if ($values->password == $values->password2) {
-            $userExist = $this->userManager->add($values->name, $values->password);
+		} catch (\App\Model\Repository\DuplicateNameException $e) {
+			$form['username']->addError('Toto uživatelské jméno je již použité. Zvolte prosím jiné.');
 
-            if ($userExist) {
-                $this->redirect('Sign:in');
-
-            } else {
-                $this->flashMessage('Uživatel už existuje', 'error');
-            }
-
-        } else {
-            $this->flashMessage('Hesla se neshodují', 'error');
-        }
-    }
-
-
-    public function createComponentResetForm()
-	{
-        $form = new Form();
-        $form->addText('email');
-        $form->addSubmit('btnReset', 'Odeslat');
-
-        $form->onSuccess[] = array($this, 'resetFormSubmit');
-
-        return $form;
-    }
-
-
-    public function resetFormSubmit(Form $form, $values)
-	{
-        $success = $this->userManager->resetPassword($values->email);
-
-        if ($success) {
-            $this->flashMessage('Nové heslo bylo zasláno na e-mail', 'success');
-
-        } else {
-            $this->flashMessage('E-mail neexistuje', 'error');
-        }
-
-        $this->redirect('this');
+		} catch (\Exception $e) {
+			\Tracy\Debugger::log($e);
+			$form->addError('Při registraci došlo k neočekávané chybě. Zkuste to prosím znovu.');
+		}
     }
 
 
     public function actionOut()
 	{
-        $this->getUser()->logout();
-        $this->flashMessage('Úspěšné odhlásení', 'success');
+        $this->getUser()->logout(TRUE);
+        $this->flashMessage('Úspěšné odhlášení.', 'success');
         $this->redirect('in');
     }
 
