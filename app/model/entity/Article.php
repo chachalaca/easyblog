@@ -96,19 +96,19 @@ class Article extends BaseEntity
 	}
 
 
-    /** @return Category[]|EntityCollection */
+	/** @return Category[]|EntityCollection */
 	public function getAllCategories()
 	{
-        $selection = $this->record->related('article_in_category');
-        return new EntityCollection($selection, Category::class, 'category');
-    }
+		$selection = $this->record->related('article_in_category');
+		return new EntityCollection($selection, Category::class, 'category');
+	}
 
 
-    /** @return Comment[]|EntityCollection */
+	/** @return Comment[]|EntityCollection */
 	public function getAllComments()
 	{
-        $selection = $this->record->related('comment', 'article_id');
-        return new EntityCollection($selection, Comment::class);
-    }
+		$selection = $this->record->related('comment', 'article_id');
+		return new EntityCollection($selection, Comment::class);
+	}
 
 }

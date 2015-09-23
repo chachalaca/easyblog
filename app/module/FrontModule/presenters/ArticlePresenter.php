@@ -10,71 +10,71 @@ use Nette\Application\UI\Form;
 class ArticlePresenter extends BasePresenter
 {
 
-    /** @var ArticleRepository */
-    private $articles;
+	/** @var ArticleRepository */
+	private $articles;
 
 	/** @var \App\Model\Entity\Article */
 	private $article = NULL;
 
 
-    public function __construct(ArticleRepository $articles)
+	public function __construct(ArticleRepository $articles)
 	{
-        parent::__construct();
+		parent::__construct();
 
-        $this->articles = $articles;
-    }
+		$this->articles = $articles;
+	}
 
 
-    public function actionDefault($articleId = NULL)
+	public function actionDefault($articleId = NULL)
 	{
-        if ($articleId !== NULL) {
-            $this->authorize();
+		if ($articleId !== NULL) {
+			$this->authorize();
 			$this->article = $this->articles->getByID($articleId);
-            $this->checkRecord($this->article);
+			$this->checkRecord($this->article);
 
-            $this['articleForm']->setDefaults([
+			$this['articleForm']->setDefaults([
 				'title' => $this->article->getTitle(),
 				'content' => $this->article->getContent(),
 			]);
-        }
+		}
 
-        $this->template->articles = $this->articles->findAll();
-    }
+		$this->template->articles = $this->articles->findAll();
+	}
 
 
-    public function actionDetail($articleId)
+	public function actionDetail($articleId)
 	{
-        $this->article = $this->articles->getByID($articleId);
-        $this->checkRecord($this->article);
-    }
+		$this->article = $this->articles->getByID($articleId);
+		$this->checkRecord($this->article);
+	}
 
 
 	/** @return void */
 	public function renderDetail($articleId)
 	{
 		$articleCategories = $this->article->getAllCategories();
-        $articleComments = $this->article->getAllComments();
+		$articleComments = $this->article->getAllComments();
 
-        $this->template->article = $this->article;
-        $this->template->articleCategories = $articleCategories;
-        $this->template->articleComments = $articleComments;
+		$this->template->article = $this->article;
+		$this->template->articleCategories = $articleCategories;
+		$this->template->articleComments = $articleComments;
 	}
 
 
-    protected function createComponentArticleForm()
+	protected function createComponentArticleForm()
 	{
-        $form = new Form;
-        $form->addText('title', 'Titulek');
-        $form->addTextArea('content', 'Obsah:');
+		$form = new Form;
+		$form->addText('title', 'Titulek');
+		$form->addTextArea('content', 'Obsah:');
 
-        $form->addSubmit('send', 'Send');
-        $form->onSuccess[] = $this->processArticleForm;
+		$form->addSubmit('send', 'Send');
+		$form->onSuccess[] = $this->processArticleForm;
 
-        return $form;
-    }
+		return $form;
+	}
 
 
-    public function processArticleForm(Form $form, $values)
+	public function processArticleForm(Form $form, $values)
 	{
 		if ($this->article === NULL) {
 			$article = $this->articles->createEntity();
@@ -87,14 +87,14 @@ class ArticlePresenter extends BasePresenter
 		$article->setContent($values->content);
 
 		$this->articles->persist($article);
-    }
+	}
 
 
-    private function authorize()
+	private function authorize()
 	{
-        if (!$this->user->isInRole('admin')) {
-            $this->redirect('default');
-        }
-    }
+		if (!$this->user->isInRole('admin')) {
+			$this->redirect('default');
+		}
+	}
 
 }

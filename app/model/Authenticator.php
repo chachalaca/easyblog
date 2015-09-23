@@ -11,23 +11,23 @@ use Nette;
 class Authenticator extends Nette\Object implements Nette\Security\IAuthenticator
 {
 
-    /** @var Repository\UserRepository */
+	/** @var Repository\UserRepository */
 	private $users;
 
 
-    public function __construct(Repository\UserRepository $users)
+	public function __construct(Repository\UserRepository $users)
 	{
-        $this->users = $users;
-    }
+		$this->users = $users;
+	}
 
 
-    /**
-     * @return Nette\Security\Identity
-     * @throws Nette\Security\AuthenticationException
-     */
-    public function authenticate(array $credentials)
+	/**
+	 * @return Nette\Security\Identity
+	 * @throws Nette\Security\AuthenticationException
+	 */
+	public function authenticate(array $credentials)
 	{
-        list($username, $password) = $credentials;
+		list($username, $password) = $credentials;
 		$user = $this->users->getByUsername($username);
 
 		if ($user === NULL) {
@@ -38,7 +38,7 @@ class Authenticator extends Nette\Object implements Nette\Security\IAuthenticato
 			throw new Nette\Security\AuthenticationException('The password is incorrect.', self::INVALID_CREDENTIAL);
 		}
 
-        return $user->getIdentity();
-    }
+		return $user->getIdentity();
+	}
 
 }

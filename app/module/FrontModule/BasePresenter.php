@@ -11,19 +11,19 @@ use Nette;
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
 
-    /**
-     * @param  mixed $record
-     * @param  string $message
-     * @return bool if ok
-     * @throws Nette\Application\BadRequestException
-     */
-    public function checkRecord($record, $message = 'Record not found')
+	/**
+	 * @param  mixed $record
+	 * @param  string $message
+	 * @return bool if ok
+	 * @throws Nette\Application\BadRequestException
+	 */
+	public function checkRecord($record, $message = 'Record not found')
 	{
-        if ($record == NULL) {
-            $this->error($message);
-        }
+		if ($record == NULL) {
+			$this->error($message);
+		}
 
-        return TRUE;
-    }
+		return TRUE;
+	}
 
 }

@@ -42,11 +42,11 @@ class Comment extends BaseEntity
 	}
 
 
-    /** @return User */
-    public function getUser()
+	/** @return User */
+	public function getUser()
 	{
-        return new User($this->record->user);
-    }
+		return new User($this->record->user);
+	}
 
 
 	/** @return \DateTime */

@@ -13,77 +13,77 @@ use \Nette\Security\AuthenticationException;
 class SignPresenter extends BasePresenter
 {
 
-    /** @var UserRepository */
+	/** @var UserRepository */
 	private $users;
 
 
-    public function __construct(UserRepository $users)
+	public function __construct(UserRepository $users)
 	{
-        $this->users = $users;
-    }
+		$this->users = $users;
+	}
 
 
-    protected function createComponentSignInForm()
+	protected function createComponentSignInForm()
 	{
-        $form = new Form();
-        $form->addText('username', 'Jméno:');
-        $form->addPassword('password', 'Name');
-        $form->addSubmit('btnLogin', 'Přihlásit');
-        $form->addCheckbox('remember');
+		$form = new Form();
+		$form->addText('username', 'Jméno:');
+		$form->addPassword('password', 'Name');
+		$form->addSubmit('btnLogin', 'Přihlásit');
+		$form->addCheckbox('remember');
 
-        $form->onSuccess[] = $this->signInFormSucceeded;
-        return $form;
-    }
+		$form->onSuccess[] = $this->signInFormSucceeded;
+		return $form;
+	}
 
 
-    public function signInFormSucceeded(Form $form, $values)
+	public function signInFormSucceeded(Form $form, $values)
 	{
-        try {
-            $this->user->login($values->username, $values->password);
+		try {
+			$this->user->login($values->username, $values->password);
 
-            if ($values->remember) {
-                $this->user->setExpiration('7 day', FALSE);
+			if ($values->remember) {
+				$this->user->setExpiration('7 day', FALSE);
 
-            } else {
-                $this->user->setExpiration('30 minutes', TRUE);
-            }
+			} else {
+				$this->user->setExpiration('30 minutes', TRUE);
+			}
 
-            $this->flashMessage('Úspěšné přihlášení', 'success');
-            $this->redirect('Article:default');
+			$this->flashMessage('Úspěšné přihlášení', 'success');
+			$this->redirect('Article:default');
 
-        } catch (AuthenticationException $e) {
-            $this->flashMessage('Špatné jméno nebo heslo.', 'error');
-        }
-    }
+		} catch (AuthenticationException $e) {
+			$this->flashMessage('Špatné jméno nebo heslo.', 'error');
+		}
+	}
 
 
-    protected function createComponentRegisterForm()
+	protected function createComponentRegisterForm()
 	{
-        $form = new Form;
+		$form = new Form;
 
-        $form->addText('email', 'E-mail:')
+		$form->addText('email', 'E-mail:')
 				->setRequired();
 
-        $form->addPassword('password', 'Helso:')
-	            ->setRequired();
+		$form->addPassword('password', 'Helso:')
+				->setRequired();
 
-        $form->addPassword('password2', 'Heslo znovu:')
+		$form->addPassword('password2', 'Heslo znovu:')
 				->setOmitted(TRUE)
 				->setRule(Form::EQUAL, NULL, $form['password'])
-	            ->setRequired();
+				->setRequired();
 
-        $form->addText('name', 'Celé jméno:')
-	            ->setRequired();
+		$form->addText('name', 'Celé jméno:')
+				->setRequired();
 
-        $form->addCheckbox('terms');
-        $form->addSubmit('btnRegister', 'Registrovat');
+		$form->addCheckbox('terms');
+		$form->addSubmit('btnRegister', 'Registrovat');
 
-        $form->onSuccess[] = $this->registerFormSucceeded;
-        return $form;
-    }
+		$form->onSuccess[] = $this->registerFormSucceeded;
+		return $form;
+	}
 
 
-    public function registerFormSucceeded(Form $form, $values)
+	public function registerFormSucceeded(Form $form, $values)
 	{
 		try {
 			$user = $this->users->createEntity();
@@ -99,14 +99,14 @@ class SignPresenter extends BasePresenter
 			\Tracy\Debugger::log($e);
 			$form->addError('Při registraci došlo k neočekávané chybě. Zkuste to prosím znovu.');
 		}
-    }
+	}
 
 
-    public function actionOut()
+	public function actionOut()
 	{
-        $this->getUser()->logout(TRUE);
-        $this->flashMessage('Úspěšné odhlášení.', 'success');
-        $this->redirect('in');
-    }
+		$this->getUser()->logout(TRUE);
+		$this->flashMessage('Úspěšné odhlášení.', 'success');
+		$this->redirect('in');
+	}
 
 }
