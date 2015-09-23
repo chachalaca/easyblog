@@ -26,4 +26,11 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
 		return TRUE;
 	}
 
+	protected function authorize()
+	{
+		if (!$this->user->isInRole('admin')) {
+			$this->redirect('default');
+		}
+	}
+
 }

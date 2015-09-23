@@ -1,26 +1,23 @@
 {block content}
-
-<div id="content">
-
-
-    {foreach $articles as $article}
-        <div>
-            <h2><a n:href="Article:detail $article->getID()">{$article->getTitle()}</a></h2>
+    <div id="content">
+        {snippet articles}
+        {foreach $articles as $article}
+            <div>
+                <h2><a n:href="Article:detail $article->getID()">{$article->getTitle()}</a></h2>
                 {if $user->isInRole('admin')}
                     <a n:href="Article:default $article->getID()">edit</a>
+                    <br>
+                    <a n:href="deleteArticle! $article->getId()" class="ajax">delete</a>
                 {/if}
-
-
-            <p>
-                {$article->getContent()}
-            </p>
-        </div>
-    {/foreach}
-
-</div>
-
-{if $user->isInRole('admin')}
-    {control articleForm}
-{/if}
+                <p>
+                    {$article->getContent()}
+                </p>
+            </div>
+        {/foreach}
+        {/snippet}
+    </div>
+    {if $user->isInRole('admin')}
+        {control articleForm}
+    {/if}
 
 {/block}

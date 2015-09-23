@@ -87,14 +87,16 @@ class ArticlePresenter extends BasePresenter
 		$article->setContent($values->content);
 
 		$this->articles->persist($article);
+
+		$this->redirect('default');
 	}
 
-
-	private function authorize()
+	public function handleDeleteArticle($id)
 	{
-		if (!$this->user->isInRole('admin')) {
-			$this->redirect('default');
-		}
-	}
+		$this->article = $this->articles->getByID($id);
+		$this->checkRecord($this->article);
 
+		$this->articles->delete($this->article);
+		$this->redrawControl('articles');
+	}
 }
