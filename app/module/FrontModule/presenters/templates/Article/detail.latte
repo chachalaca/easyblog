@@ -1,20 +1,17 @@
-{* This is the welcome page, you can delete it *}
-
 {block content}
 
 <div id="content">
-    <h2>{$article->title}</h2>
+    <h2>{$article->getTitle()}</h2>
 
     <p>
-        {$article->content}
+        {$article->getContent()}
     </p>
-    <span>{$article->created_at|date:'%d.%m.%Y'}</span>
+    <span>{$article->getCreatedAt() |date:'%d.%m.%Y'}</span>
 
     <p>
         Kategorie:
         {foreach $articleCategories as $category}
-            {$category->title}
-            {if !$iterator->last}, {/if}
+            {$category->getTitle()}{sep}, {/sep}
         {/foreach}
     </p>
 
@@ -22,8 +19,8 @@
     {foreach $articleComments as $articleComment}
 
         <div>
-            Autor: {$articleComment->getUser()->username} </br>
-            {$articleComment->message}
+            Autor: {$articleComment->getUser()->getUsername()} </br>
+            {$articleComment->getMessage()}
         </div>
     {/foreach}
 

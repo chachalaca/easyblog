@@ -1,6 +1,6 @@
--- Adminer 4.2.0 MySQL dump
+-- Adminer 4.2.2 MySQL dump
 
-SET NAMES utf8mb4;
+SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
@@ -74,11 +74,12 @@ CREATE TABLE `user` (
   `username` varchar(255) COLLATE utf8_czech_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_czech_ci NOT NULL,
   `role` varchar(255) COLLATE utf8_czech_ci NOT NULL DEFAULT 'user',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci;
 
 INSERT INTO `user` (`id`, `username`, `password`, `role`) VALUES
 (1,	'admin',	'$2y$10$pEMUJ/.qM1at5aoAF2eM9uKpUsa6Tz7QAXTHJ.jGas0Hkos0B6q8q',	'admin'),
 (3,	'test',	'$2y$10$lIox6HOHXM1zUemmG9h05uIcK3Y1GkXStnq4Wy6ZPnLd6UE/v0uMu',	'user');
 
--- 2015-09-21 22:06:21
+-- 2015-09-22 19:15:43

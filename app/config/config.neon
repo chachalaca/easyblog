@@ -20,5 +20,7 @@ session:
 
 services:
 	router: App\RouterFactory::createRouter
-	userManager: App\Model\UserManager
+
+	- App\Model\Authenticator
+	- App\Model\Repository\UserRepository
 	- App\Model\Repository\ArticleRepository

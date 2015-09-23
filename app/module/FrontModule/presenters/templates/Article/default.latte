@@ -1,19 +1,18 @@
-{* This is the welcome page, you can delete it *}
-
 {block content}
+
 <div id="content">
 
 
     {foreach $articles as $article}
         <div>
-            <h2><a n:href="Article:detail $article->id">{$article->title}</a></h2>
+            <h2><a n:href="Article:detail $article->getID()">{$article->getTitle()}</a></h2>
                 {if $user->isInRole('admin')}
-                    <a n:href="Article:default $article->id">edit</a>
+                    <a n:href="Article:default $article->getID()">edit</a>
                 {/if}
 
 
             <p>
-                {$article->content}
+                {$article->getContent()}
             </p>
         </div>
     {/foreach}
@@ -23,3 +22,5 @@
 {if $user->isInRole('admin')}
     {control articleForm}
 {/if}
+
+{/block}
