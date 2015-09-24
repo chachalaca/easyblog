@@ -14,6 +14,10 @@ use YetORM\Entity;
 use YetORM\EntityCollection;
 
 
+/**
+ * Class Comment
+ * @package App\Model\Entity
+ */
 class Comment extends BaseEntity
 {
 
@@ -49,12 +53,40 @@ class Comment extends BaseEntity
 	}
 
 
+	/**
+	 * @param User $user
+	 * @return $this
+	 */
+	public function setUser(User $user)
+	{
+		$this->record->user_id = $user->getID();
+		return $this;
+	}
+
+
 	/** @return \DateTime */
 	public function getCreatedAt()
 	{
 		return $this->record->created_at;
 	}
 
+
+	/**
+	 * @return Article
+	 */
+	public function getArticle() {
+		return new Article($this->record->article);
+	}
+
+
+	/**
+	 * @param Article $article
+	 * @return $this
+	 */
+	public function setArticle(Article $article) {
+		$this->record->article_id = $article->getID();
+		return $this;
+	}
 
 	/**
 	 * @param  \DateTime $date

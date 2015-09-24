@@ -16,12 +16,23 @@
     </p>
 
     <h3>Komentáře:</h3>
+    <hr>
+    {snippet comments}
     {foreach $articleComments as $articleComment}
-
         <div>
-            Autor: {$articleComment->getUser()->getUsername()} </br>
+            Autor: {$articleComment->getUser()->getUsername()}
+            {if $user->isInRole('admin')}
+                <a n:href="deleteComment! $articleComment->getId()" class="ajax"> | Smazat</a>
+            {/if}
+            </br>
             {$articleComment->getMessage()}
         </div>
+        <hr>
     {/foreach}
+    {/snippet}
+
+    <div n:if="$user->isLoggedIn()">
+        {control commentForm}
+    </div>
 
 </div>
