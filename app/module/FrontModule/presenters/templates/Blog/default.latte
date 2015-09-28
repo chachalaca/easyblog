@@ -1,0 +1,32 @@
+{block content}
+
+    <div id="content">
+        {if $user->isInRole('admin')}
+            {control newArticleForm}
+        {/if}
+
+        {snippet articles}
+        {foreach $articles as $article}
+            {var $unpublished = ($article->getStatus() == \App\Model\Entity\Article\Status::UNPUBLISHED)}
+            <div>
+                <h2><a n:href="Blog:detail $article->getUrl()">{if $unpublished}(unpublished) {/if}{$article->getTitle()}</a></h2>
+                {if $user->isInRole('admin')}
+                    <a n:href="Blog:detail $article->getUrl()">edit</a>
+                    <br>
+                    {if $unpublished}
+                        <a n:href="publishArticle! $article->getID()" class="ajax">publish</a>
+                    {else}
+                        <a n:href="publishArticle! $article->getID(), FALSE" class="ajax">unpublish</a>
+                    {/if}
+                    <br>
+                    <a n:href="deleteArticle! $article->getID()" class="ajax">delete</a>
+                {/if}
+                <p>
+                    {$article->getContent()}
+                </p>
+            </div>
+        {/foreach}
+        {/snippet}
+    </div>
+
+{/block}

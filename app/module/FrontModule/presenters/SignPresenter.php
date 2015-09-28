@@ -49,7 +49,7 @@ class SignPresenter extends BasePresenter
 			}
 
 			$this->flashMessage('Úspěšné přihlášení', 'success');
-			$this->redirect('Article:default');
+			$this->redirect('Blog:default');
 
 		} catch (AuthenticationException $e) {
 			$this->flashMessage('Špatné jméno nebo heslo.', 'error');

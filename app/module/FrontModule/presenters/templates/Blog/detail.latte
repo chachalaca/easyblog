@@ -1,0 +1,71 @@
+{block content}
+
+
+
+<div id="content">
+    {snippet article}
+
+    {var $unpublished = ($article->getStatus() == \App\Model\Entity\Article\Status::UNPUBLISHED)}
+    <span>
+    {if $unpublished}
+        Tento článek není publikován. <a n:href="publishArticle! $article->getID()" class="ajax">Publikovat</a>
+    {else}
+        Tento článek je publikován. <a n:href="publishArticle! $article->getID(), FALSE" class="ajax">Zrušit publikaci článku</a>
+    {/if}
+    </span>
+
+    <p>
+        Kategorie:
+        {if $user->isInRole('admin')}
+            {control categoryForm}
+        {/if}
+        {foreach $articleCategories as $category}
+            {$category->getTitle()}{sep}, {/sep}
+        {/foreach}
+    </p>
+
+
+    <h2>{if $unpublished}(unpublished) {/if}{$article->getTitle()}</h2>
+
+    <p>
+    {if $user->isInRole('admin')}
+        <textarea>{$article->getContent()}</textarea>
+    {else}
+        {$article->getContent()}
+    {/if}
+    </p>
+    <span>{$article->getCreatedAt() |date:'%d.%m.%Y'}</span>
+
+    <p>
+        Kategorie:
+        {foreach $articleCategories as $category}
+            {$category->getTitle()}{sep}, {/sep}
+        {/foreach}
+    </p>
+
+    <h3>Komentáře:</h3>
+    <hr>
+    {/snippet}
+
+    {snippet comments}
+
+    <div n:if="$user->isLoggedIn()">
+        {control commentForm}
+    </div>
+
+    {foreach $articleComments as $articleComment}
+        <div>
+            Autor: {$articleComment->getUser()->getUsername()}
+            {if $user->isInRole('admin')}
+                <a n:href="deleteComment! $articleComment->getId()" class="ajax"> | Smazat</a>
+            {/if}
+            </br>
+            {$articleComment->getMessage()}
+        </div>
+        <hr>
+    {/foreach}
+    {/snippet}
+
+
+
+</div>

@@ -17,12 +17,23 @@ class RouterFactory
 	{
 		$router = new RouteList;
 
-		$router[] = new Route('<presenter>/<action>[/<articleId>]', [
-			'module' => 'Front',
-			'presenter' => 'Article',
-			'action' => 'default',
-			'articleId' => NULL,
-		]);
+        $router[] = new Route('/<articleId>[/from/<presenter>/<action>]', [
+            'module' => 'Front',
+            'presenter' => 'Blog',
+            'action' => 'detail',
+
+        ]);
+
+        $router[] = new Route('<presenter>/[<action>[/<id>]]', [
+            'module' => 'Front',
+            'presenter' => 'Blog',
+            'action' => 'default',
+            'id' => NULL,
+        ]);
+
+
+
+
 
 		return $router;
 	}

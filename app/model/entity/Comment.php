@@ -98,4 +98,28 @@ class Comment extends BaseEntity
 		return $this;
 	}
 
+
+    /**
+     * @return int
+     */
+    public function getStatus() {
+        return $this->record->status;
+    }
+
+    /**
+     * @param int $status
+     * @return $this
+     */
+    public function setStatus($status) {
+        $this->record->status = $status;
+        return $this;
+    }
+
+}
+
+namespace App\Model\Entity\Comment;
+class Status {
+    const UNPUBLISHED = 0;
+    const PUBLISHED = 1;
+    const DELETED = 9;
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
 
-    <title>{ifset title}{include title|striptags} | {/ifset}Nette Web</title>
+    <title>{ifset title}{include title|striptags} | {/ifset}EasyBlog</title>
 
     <link rel="shortcut icon" href="{$basePath}/favicon.ico">
 </head>
@@ -15,11 +15,13 @@
 <div>
     {if $user->isLoggedIn()}
         Přihlášen: {$user->getIdentity()->username}
-        <a n:href="Sign:out">Odhlásit</a>
+        <a n:href=":Front:Sign:out">Odhlásit</a>
     {else}
-        <a n:href="Sign:in">Přihlásit</a>
+        <a n:href=":Front:Sign:in">Přihlásit</a>
     {/if}
 </div>
+
+<h1><a n:href="Blog:">EasyBlog</a></h1>
 
 {include content}
 
