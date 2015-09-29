@@ -30,10 +30,6 @@ class BlogPresenter extends BasePresenter
      */
     private $categories;
 
-    /**
-     * @var ArticleInCategoryRepository
-     */
-    private $articlesInCategories;
 
     /** @var \App\Model\Entity\Article */
     private $article = NULL;
@@ -54,7 +50,6 @@ class BlogPresenter extends BasePresenter
         $this->comments = $comments;
         $this->users = $users;
         $this->categories = $categories;
-        $this->articlesInCategories = $articlesInCategories;
     }
 
     public function actionDetail($articleId) {
@@ -194,21 +189,7 @@ class BlogPresenter extends BasePresenter
     {
         $this->authorize();
 
-        foreach($this->articlesInCategories->findBy(array('article_id' => $this->article->getID())) as $bind) {
-            $this->articlesInCategories->delete($bind);
-        }
-
-        foreach($values->categories as $categoryId) {
-            $bind = $this->articlesInCategories->createEntity();
-
-            $article = $this->articles->getByID($this->article->getId());
-            $category = $this->categories->getByID($categoryId);
-
-            $bind->setArticleId($article->getId());
-            $bind->setCategoryId($category->getId());
-
-            $this->articlesInCategories->persist($bind);
-        }
+        $this->articles->setArticleCategories($this->article, $values->categories);
 
         $this->redrawControl();
     }
