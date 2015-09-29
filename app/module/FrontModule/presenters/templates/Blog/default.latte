@@ -22,7 +22,7 @@
                     <a n:href="deleteArticle! $article->getID()" class="ajax">delete</a>
                 {/if}
                 <p>
-                    {$article->getContent()}
+                    {$article->getContent()|noescape}
                 </p>
             </div>
         {/foreach}

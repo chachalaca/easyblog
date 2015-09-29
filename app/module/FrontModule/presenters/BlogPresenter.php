@@ -90,7 +90,7 @@ class BlogPresenter extends BasePresenter
     }
 
 
-    // Article form
+    // NewArticle form
 
     protected function createComponentNewArticleForm()
     {
@@ -161,7 +161,7 @@ class BlogPresenter extends BasePresenter
     public function createComponentCategoryForm() {
         $form = new Form();
         $form->getElementPrototype()->onchange('submit()');
-        $form->getElementPrototype()->class('ajaxx()');
+        $form->getElementPrototype()->class('ajax');
 
         $form->addMultiSelect(
             'categories',
@@ -195,6 +195,33 @@ class BlogPresenter extends BasePresenter
     }
 
 
+    // EditArticleForm
+
+    public function createComponentEditArticleForm() {
+        $form = new Form();
+        $form->getElementPrototype()->class('ajax');
+        $form->getElementPrototype()->id('areaform');
+
+        $form->addTextArea('text')
+            ->setDefaultValue($this->article->getContent())
+            ->getControlPrototype()->id('area');
+        $form->addSubmit('submit');
+
+
+        $form->onSuccess[] = $this->processEditArticleForm;
+        return $form;
+    }
+
+
+    public function processEditArticleForm(Form $form, $values)
+    {
+        $this->authorize();
+
+        $this->article->setContent($values->text);
+        $this->articles->persist($this->article);
+
+        $this->redrawControl();
+    }
 
 
     public function handleDeleteArticle($id)

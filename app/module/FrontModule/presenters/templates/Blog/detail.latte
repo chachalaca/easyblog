@@ -1,9 +1,42 @@
+{block scripts}
+
+<script>
+    // Turn off automatic editor creation first.
+    CKEDITOR.disableAutoInline = true;
+    CKEDITOR.inline( 'editor1' );
+</script>
+
+<script>
+
+    $( "form#areaform" ).hide();
+    $( "#editor1" ).focus();
+
+    $( "#save" ).click(function() {
+
+        var data = CKEDITOR.instances.editor1.getData();
+
+        $( "textarea#area" ).val(data);
+        $( "form#areaform" ).submit();
+
+    });
+
+
+
+</script>
+
+
+{/block}
+
 {block content}
 
 
 
 <div id="content">
     {snippet article}
+
+    <script>
+        $( "form#areaform" ).hide();
+    </script>
 
     {var $unpublished = ($article->getStatus() == \App\Model\Entity\Article\Status::UNPUBLISHED)}
     <span>
@@ -24,16 +57,19 @@
         {/foreach}
     </p>
 
-
     <h2>{if $unpublished}(unpublished) {/if}{$article->getTitle()}</h2>
 
-    <p>
     {if $user->isInRole('admin')}
-        <textarea>{$article->getContent()}</textarea>
-    {else}
-        {$article->getContent()}
+        <a href="#" id="save">save</a>
+        {control editArticleForm}
     {/if}
-    </p>
+
+    <div{if $user->isInRole('admin')} id="editor1" contenteditable="true"{/if}>
+
+        {$article->getContent()|noescape}
+
+    </div>
+
     <span>{$article->getCreatedAt() |date:'%d.%m.%Y'}</span>
 
     <p>

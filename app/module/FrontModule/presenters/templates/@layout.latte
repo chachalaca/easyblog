@@ -7,6 +7,9 @@
     <title>{ifset title}{include title|striptags} | {/ifset}EasyBlog</title>
 
     <link rel="shortcut icon" href="{$basePath}/favicon.ico">
+
+
+
 </head>
 
 <body>
@@ -25,11 +28,15 @@
 
 {include content}
 
+<script src="{$basePath}/js/jquery-1.11.3.min.js"></script>
+<script src="//nette.github.io/resources/js/netteForms.min.js"></script>
+<script src="{$basePath}/js/nette.ajax.js"></script>
+<script src="{$basePath}/js/init.js"></script>
+<script src="//cdn.ckeditor.com/4.5.3/standard/ckeditor.js"></script>
 {block scripts}
-    <script src="{$basePath}/js/jquery-1.11.3.min.js"></script>
-    <script src="//nette.github.io/resources/js/netteForms.min.js"></script>
-    <script src="{$basePath}/js/nette.ajax.js"></script>
-    <script src="{$basePath}/js/init.js"></script>
+
 {/block}
+
 </body>
+
 </html>
